@@ -1,6 +1,6 @@
 # CoinMetro Exchange NodeJS REST MicroService
 
-This microservice receives/responds to all REST protocol requests from external REST based client applications. It uses redis pub/sub to receive/send messages (data) to and from the core microservice, messages received are cached with the redis cache.
+This microservice should receive/respond to all REST protocol requests from external REST based client applications. It will use redis pub/sub to receive/send messages (data) to and from the core microservice, messages received are cached with the redis cache.
 
 ## API Documentation
 
@@ -408,29 +408,3 @@ This microservice receives/responds to all REST protocol requests from external 
   "message": "Invalid interval specified"
 }
 ```
-
-
-## How the microservice is currently structured (Tentative)
-### Routes
-The routes are all tied to each of its controller action.
-
-### Cache
-Basically handles the caching of data received from the core service. However, it hasn't been organised properly as the structure of how messages will be published from the core service.
-
-### Controllers
-Handles client request/responses, if it is a `POST` request such as `newOrderRequest` the action basically publishes the request data to the Core Microservice, if it is a `GET` request such as `orderStatusRequest`, it fetches the order with the `orderId` that was passed in the `req.params` from the cache and if for some reason it is not found in the local cache it publishes that `orderId` to Core Microservice to publish the status of that particular order.
-**Comment from Salvatore**: _What is the cache control criteria ? Can the Core Microservice publish a signal to bust the cache of the children Microservices, REST API in this case ? Otherwise we risk giving wrong infomation about the orders._
-
-## Core Technologies Used
-- Express
-- Redis (Pub/Sub/Cache)
-
-## How to setup locally
-1. Within the `src` of the `CoinMetro.Services.REST`, run npm `install`
-2. Ensure a `redis-server` is running
-3. Run `npm run start:dev`
-4. ...
-
-
-## Unit testing
-Currently, no test has been written but will be done soon.
